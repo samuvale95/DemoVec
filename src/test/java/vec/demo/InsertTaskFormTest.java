@@ -4,16 +4,20 @@ import javafx.scene.Node;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
-import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.framework.junit5.Start;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.api.FxToolkit.registerPrimaryStage;
+
 import javafx.stage.Stage;
 import vec.demo.todo.Priority;
 import vec.demo.todo.Task;
+
+import java.util.concurrent.TimeoutException;
 
 @ExtendWith(ApplicationExtension.class)
 class InsertTaskFormTest {
@@ -25,6 +29,19 @@ class InsertTaskFormTest {
     private final String PRIORITY_CHOICE = "#inputPriority";
     private final String TABLE = "#table";
 
+    @BeforeAll
+    public static void setUpClass() throws TimeoutException {
+
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("headless.geometry", "1600x1200-32");
+        }
+        registerPrimaryStage();
+    }
 
     @Start
     public void start(Stage stage) {

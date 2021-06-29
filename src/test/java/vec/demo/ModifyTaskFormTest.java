@@ -6,6 +6,7 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,8 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.*;
 import vec.demo.todo.Priority;
 import vec.demo.todo.Task;
+
+import java.util.concurrent.TimeoutException;
 
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.api.FxToolkit.registerPrimaryStage;
@@ -33,6 +36,20 @@ public class ModifyTaskFormTest{
     private final String TEST_DESC = "Test Desc";
     private final Priority TEST_PRIORITY = Priority.MEDIUM;
 
+
+    @BeforeAll
+    public static void setUpClass() throws TimeoutException {
+
+        if (Boolean.getBoolean("headless")) {
+            System.setProperty("testfx.robot", "glass");
+            System.setProperty("testfx.headless", "true");
+            System.setProperty("prism.order", "sw");
+            System.setProperty("prism.text", "t2k");
+            System.setProperty("java.awt.headless", "true");
+            System.setProperty("headless.geometry", "1600x1200-32");
+        }
+        registerPrimaryStage();
+    }
 
     @Start
     public void start(Stage stage) {
