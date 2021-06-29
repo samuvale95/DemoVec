@@ -1,10 +1,9 @@
 language: java
 
-sudo: false   # Linux OS: run in container
+sudo: false
 
 matrix:
   include:
-    # Ubuntu Linux (trusty) / Oracle JDK 8 / Headless
     - os: linux
       dist: trusty
       jdk: oraclejdk8
