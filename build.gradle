@@ -1,0 +1,27 @@
+plugins {
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.8'
+}
+
+javafx {
+    version='12'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "org.testfx:openjfx-monocle:8u76-b04" // For Java 8
+    testRuntime "org.testfx:testfx-core:4.0.16-alpha"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.5.2'
+    testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
+    testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+mainClassName = 'vec.demo.MainApp'
