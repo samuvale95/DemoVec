@@ -16,9 +16,11 @@ public class ModifyTaskForm extends HBox {
     public ModifyTaskForm(TableView<Task> tableView, VBox vBox, InsertTaskForm insertTaskForm) {
 
         this.btnSave = new Button("Save");
+        this.btnSave.setId("save");
         this.btnSave.setDisable(true);
 
         this.btnCancel = new Button("Cancel");
+        this.btnCancel.setId("cancel");
         this.inputField = new FormInputField();
 
         this.setPadding(new Insets(10,10,10,10));

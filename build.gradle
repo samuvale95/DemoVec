@@ -14,15 +14,18 @@ repositories {
 
 dependencies {
     testCompile "org.testfx:openjfx-monocle:jdk-12.0.1+2" // For Java 12
-    testCompile "org.testfx:testfx-core:4.0.+"
+    testCompile "org.testfx:testfx-core:4.0.16-alpha"
     testCompile 'org.junit.jupiter:junit-jupiter:5.5.2'
-    testCompile "org.testfx:testfx-junit5:4.0.+"
+    testCompile "org.testfx:testfx-junit5:4.0.16-alpha"
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.13.2'
 }
 
 test {
     useJUnitPlatform()
     jvmArgs "-Dheadless=${project.hasProperty('headless') ? project.headless : false}"
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
 mainClassName = 'vec.demo.MainApp'

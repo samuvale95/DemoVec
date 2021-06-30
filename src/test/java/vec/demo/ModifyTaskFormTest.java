@@ -2,32 +2,36 @@ package vec.demo;
 
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
+import org.testfx.api.FxRobotException;
+import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.*;
 import vec.demo.todo.Priority;
 import vec.demo.todo.Task;
-
 import java.util.concurrent.TimeoutException;
-
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.testfx.api.FxAssert.verifyThat;
 import static org.testfx.api.FxToolkit.registerPrimaryStage;
+import static org.testfx.assertions.api.Assertions.assertThat;
 
 
 @ExtendWith(ApplicationExtension.class)
 public class ModifyTaskFormTest{
 
-    private final String ADD_BUTTON = "Add";
-    private final String DONE_BUTTON = "Done";
-    private final String SAVE_BUTTON = "Save";
-    private final String CANCEL_BUTTON = "Cancel";
+    private final String ADD_BUTTON = "#add";
+    private final String DONE_BUTTON = "#done";
+    private final String SAVE_BUTTON = "#save";
+    private final String CANCEL_BUTTON = "#cancel";
     private final String NAME_FIELD = "#inputName";
     private final String DESC_FIELD = "#inputDesc";
     private final String PRIORITY_CHOICE = "#inputPriority";
@@ -38,17 +42,14 @@ public class ModifyTaskFormTest{
 
 
     @BeforeAll
-    public static void setUpClass() throws TimeoutException {
-
+    public static void setUpClass() {
         if (Boolean.getBoolean("headless")) {
             System.setProperty("testfx.robot", "glass");
             System.setProperty("testfx.headless", "true");
             System.setProperty("prism.order", "sw");
             System.setProperty("prism.text", "t2k");
             System.setProperty("java.awt.headless", "true");
-            System.setProperty("headless.geometry", "1600x1200-32");
         }
-        registerPrimaryStage();
     }
 
     @Start
@@ -58,6 +59,16 @@ public class ModifyTaskFormTest{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @BeforeEach
+    public void setup() throws TimeoutException {
+        FxToolkit.registerPrimaryStage();
+    }
+
+    @AfterEach
+    public void tearDown() throws TimeoutException {
+        FxToolkit.cleanupStages();
     }
 
     public void addTask(FxRobot robot) {
@@ -81,7 +92,7 @@ public class ModifyTaskFormTest{
 
         verifyThat(NAME_FIELD, (TextField t) -> t.getText().equals(TEST_NAME));
         verifyThat(DESC_FIELD, (TextField t) -> t.getText().equals(TEST_DESC));
-        verifyThat(PRIORITY_CHOICE, (ChoiceBox<Priority> c) -> c.getValue() == TEST_PRIORITY);
+        verifyThat(PRIORITY_CHOICE, (ComboBox<Priority> c) -> c.getValue() == TEST_PRIORITY);
     }
 
     @Test
@@ -92,7 +103,7 @@ public class ModifyTaskFormTest{
 
         String modifyTestName = "Test2";
         String modifyTestDesc = "Test desc 2";
-        Priority modifyPriority = Priority.HIGH;
+        Priority modifyPriority = Priority.CRITIC;
 
         robot.clickOn(NAME_FIELD);
         clearField(robot, NAME_FIELD);
@@ -113,9 +124,9 @@ public class ModifyTaskFormTest{
 
         Task t = (Task) robot.lookup(TABLE).queryTableView().getItems().get(0);
 
-//        assertThat(t.getName()).isEqualTo(modifyTestName);
-//        assertThat(t.getDescription()).isEqualTo(modifyTestDesc);
-//        assertThat(t.getPriority()).isEqualTo(modifyPriority);
+        assertThat(t.getName()).isEqualTo(modifyTestName);
+        assertThat(t.getDescription()).isEqualTo(modifyTestDesc);
+        assertThat(t.getPriority()).isEqualTo(modifyPriority);
 
     }
 
@@ -125,8 +136,8 @@ public class ModifyTaskFormTest{
         TableRow<Task> row = robot.lookup(TABLE).lookup(".table-row-cell").nth(0).query();
         robot.doubleClickOn(row);
 
-//        assertThatThrownBy(() -> robot.clickOn(ADD_BUTTON)).isInstanceOf(FxRobotException.class);
-//        assertThatThrownBy(() -> robot.clickOn(DONE_BUTTON)).isInstanceOf(FxRobotException.class);
+        assertThatThrownBy(() -> robot.clickOn(ADD_BUTTON)).isInstanceOf(FxRobotException.class);
+        assertThatThrownBy(() -> robot.clickOn(DONE_BUTTON)).isInstanceOf(FxRobotException.class);
     }
 
     @Test
@@ -139,8 +150,8 @@ public class ModifyTaskFormTest{
 
         verifyThat(TABLE, node -> !node.isDisabled());
 
-//        assertThatThrownBy(() -> robot.clickOn(CANCEL_BUTTON)).isInstanceOf(FxRobotException.class);
-//        assertThatThrownBy(() -> robot.clickOn(SAVE_BUTTON)).isInstanceOf(FxRobotException.class);
+        assertThatThrownBy(() -> robot.clickOn(CANCEL_BUTTON)).isInstanceOf(FxRobotException.class);
+        assertThatThrownBy(() -> robot.clickOn(SAVE_BUTTON)).isInstanceOf(FxRobotException.class);
     }
 
     @Test

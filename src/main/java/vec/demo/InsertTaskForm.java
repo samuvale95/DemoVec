@@ -15,7 +15,9 @@ public class InsertTaskForm extends HBox {
 
     public InsertTaskForm(TableView<Task> tableView, Todo todo) {
         this.btnAdd = new Button("Add");
+        this.btnAdd.setId("add");
         this.btnDone = new Button("Done");
+        this.btnDone.setId("done");
         this.inputField = new FormInputField();
 
         this.getChildren().addAll(inputField, btnAdd, btnDone);

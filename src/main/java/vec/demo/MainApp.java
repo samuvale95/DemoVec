@@ -27,7 +27,9 @@ public class MainApp extends Application {
         TableColumn<Task, String> colDescr = new TableColumn<>("Description");
         TableColumn<Task, Priority> colPriority = new TableColumn<>("Priority");
 
-        tableView.getColumns().addAll(colName, colDescr, colPriority);
+        tableView.getColumns().add(colName);
+        tableView.getColumns().add(colDescr);
+        tableView.getColumns().add(colPriority);
 
         tableView.getItems().addAll(todo.getAll());
 
